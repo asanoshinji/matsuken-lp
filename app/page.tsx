@@ -1,16 +1,21 @@
+import { Hero } from "@/components/sections/hero"
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center font-sans">
-      <main className="flex w-full max-w-3xl flex-col items-center gap-8 px-6 py-16 text-center sm:items-start sm:text-left">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-4xl font-bold tracking-tight">
-            松本建設様平屋LP
-          </h1>
-          <p className="max-w-md text-lg text-muted-foreground">
-            To get started, send a prompt or modify this page directly.
+    <main>
+      <Hero />
+      
+      {/* Placeholder for form section - will be implemented later */}
+      <section id="form-section" className="min-h-screen bg-secondary py-20">
+        <div className="mx-auto max-w-7xl px-6 md:px-10">
+          <h2 className="font-serif text-2xl font-medium tracking-wide text-foreground md:text-3xl">
+            お問い合わせ
+          </h2>
+          <p className="mt-4 font-sans text-muted-foreground">
+            資料請求フォームは後ほど追加されます。
           </p>
         </div>
-      </main>
-    </div>
-  );
+      </section>
+    </main>
+  )
 }
