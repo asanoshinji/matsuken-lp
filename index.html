@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>平屋住宅 STORY｜松本建設 熊本県玉名・荒尾</title>
 <meta name="description" content="熊本県玉名・荒尾の平屋専門ブランド「STORY」。自由設計×コミコミ1,375万円〜。夫婦2人にちょうどいい、バリアフリーの平屋住宅。">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="image" href="https://raw.githubusercontent.com/asanoshinji/matsuken-lp/main/main_1.png">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=M+PLUS+1p:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -871,7 +871,8 @@
 <section class="hero">
   <div class="hero-slides">
     <div class="hero-slide active" style="background-image:url('https://raw.githubusercontent.com/asanoshinji/matsuken-lp/main/main_1.png')"></div>
-    <div class="hero-slide" style="background-image:url('https://raw.githubusercontent.com/asanoshinji/matsuken-lp/main/main_2.png')"></div>
+    <div class="hero-slide" id="slide-2"></div>
+    <div class="hero-slide" id="slide-3"></div>
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -1100,19 +1101,40 @@
   const dots = document.querySelectorAll('.hero-dot');
   let current = 0;
   let timer;
+  let loaded = [true, false];
+
+  // 2枚目は初回切り替え直前に読み込む
+  function preloadSlide(index) {
+    if (loaded[index]) return;
+    loaded[index] = true;
+    const urls = [
+      'https://raw.githubusercontent.com/asanoshinji/matsuken-lp/main/main_1.png',
+      'https://raw.githubusercontent.com/asanoshinji/matsuken-lp/main/main_2.png'
+    ];
+    if (urls[index]) {
+      slides[index].style.backgroundImage = `url('${urls[index]}')`;
+    }
+  }
 
   function goTo(index) {
     slides[current].classList.remove('active');
     dots[current].classList.remove('active');
     current = (index + slides.length) % slides.length;
+    preloadSlide(current);
     slides[current].classList.add('active');
     dots[current].classList.add('active');
   }
 
   function startTimer() {
     clearInterval(timer);
-    timer = setInterval(() => goTo(current + 1), 5000);
+    timer = setInterval(() => {
+      preloadSlide((current + 1) % slides.length);
+      goTo(current + 1);
+    }, 5000);
   }
+
+  // 2枚目を2秒後にプリロード開始（初期表示を優先）
+  setTimeout(() => preloadSlide(1), 2000);
 
   dots.forEach(dot => {
     dot.addEventListener('click', () => {
